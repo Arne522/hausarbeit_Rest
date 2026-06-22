@@ -5,7 +5,7 @@ Eine Spring-Boot-REST-API zur praktischen Demonstration von API-Sicherheitsschwa
 
 Technologie-Stack
 
-KomponenteTechnologieFrameworkSpring Boot 4.0.6SpracheJava 25SicherheitSpring Security + JJWT 0.11.5DatenbankH2 (In-Memory)BuildMaven
+KomponenteTechnologieFrameworkSpring Boot 4.0.6 Sprache Java 25 SicherheitSpring Security + JJWT 0.11.5 DatenbankH2 (In-Memory)BuildMaven
 
 
 Voraussetzungen
@@ -36,33 +36,41 @@ Endpunkte
 
 Auth (offen, kein Token erforderlich)
 
-MethodePfadBeschreibungPOST/auth/loginLogin, gibt Access- und Refresh-Token zurückPOST/auth/registerNeuen User anlegen (Rolle USER), gibt direkt Tokens zurückPOST/auth/refreshNeuen Access-Token per Refresh-Token holen
+POST/auth/loginLogin, gibt Access- und Refresh-Token zurück, gibt direkt Tokens zurück 
+POST/auth/refresh Neuen Access-Token per Refresh-Token holen
 
 Personen (JWT erforderlich)
 
-MethodePfadBeschreibungGET/api/personenEigene Personen abrufen (bei BOLA-Schutz aktiv)GET/api/personen/{id}Einzelne Person abrufenPOST/api/personenNeue Person anlegen (Owner = eingeloggter User)DELETE/api/personen/{id}Person löschenGET/api/safetyTest-Endpoint
+GET/api/personenEigene Personen abrufen (bei BOLA-Schutz aktiv)
+GET/api/personen/{id}Einzelne Person abrufen 
+POST/api/personenNeue Person anlegen (Owner = eingeloggter User)
+DELETE/api/personen/{id}Person löschen
+GET/api/safetyTest-Endpoint
 
 Admin (JWT mit Rolle ADMIN erforderlich)
 
-MethodePfadBeschreibungGET/api/admin/personenAlle Personen aller User abrufen
+GET/api/admin/personenAlle Personen aller User abrufen
 
 
-Beispiel-Request (Postman / curl)
+Beispiel-Request (Postman)
 
 Login:
 
-bashcurl -X POST http://localhost:8080/auth/login \
+ -X POST http://localhost:8080/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"username":"User","password":"passwort"}'
+  -d '{
+  "username": "User",
+  "password": "passwort"
+}'
 
 Gesicherter Endpoint:
 
-bashcurl http://localhost:8080/api/personen \
+ http://localhost:8080/api/personen \
   -H "Authorization: Bearer <access-token>"
 
 Refresh:
 
-bashcurl -X POST http://localhost:8080/auth/refresh \
+ -X POST http://localhost:8080/auth/refresh \
   -H "Content-Type: text/plain" \
   -d '<refresh-token>'
 
